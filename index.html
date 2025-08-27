@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PAYMENT RYUZEN🦅</title>
+  <title>PAYMENT DANJI</title>
   <style>
     :root {
       --bg-dark: #0e0e2c;
@@ -222,14 +222,14 @@
   <div class="container">
     <div class="card">
       <div class="top-section">
-        <img src="https://files.catbox.moe/5jxdq5.jpg" class="avatar" alt="RYUZEN Avatar" />
+        <img src="https://files.catbox.moe/vfot45.jpg" class="avatar" alt="DANJI Avatar" />
         <select id="language" onchange="setLanguage()">
           <option value="id">🇮🇩 Indonesia</option>
           <option value="en">🇬🇧 English</option>
         </select>
       </div>
 
-      <h1 id="title">Payment <span class="highlight">RYUZEN🦅</span></h1>
+      <h1 id="title">Payment <span class="highlight">DANJI👾</span></h1>
 
       <div class="buttons">
         <button class="pay-btn" onclick="showInfo('dana')">DANA</button>
@@ -242,10 +242,10 @@
       </div>
 
       <p class="note" id="note-text">
-        Setelah transfer, mohon kirimkan bukti pembayaran ke <span class="highlight">RYUZEN🦅</span> melalui WhatsApp.
+        Setelah transfer, mohon kirimkan bukti pembayaran ke <span class="highlight">DANJI👾</span> melalui Telegram.
       </p>
 
-      <a href="https://wa.me/6283846040552" class="whatsapp-button" id="wa-button">Hubungi WhatsApp</a>
+      <a href="t.me/danji27" class="telegram-button" id="wa-button">Hubungi Telegram</a>
     </div>
   </div>
 
@@ -253,28 +253,28 @@
     const languageData = {
       id: {
         select: "Pilih metode pembayaran di atas.",
-        dana: "DANA:<br>083833230870<br>A/n NANDO",
+        dana: "DANA:<br>089637254003<br>A/n NONE",
         gopay: "GoPay:<br>-<br>A/n -",
         copy: "Salin Nomor",
         copied: "Disalin!",
         note: "Setelah transfer, mohon kirimkan bukti pembayaran ke",
-        wa: "Hubungi WhatsApp",
+        tele: "Hubungi Telegram",
         download: "Unduh QRIS"
       },
       en: {
         select: "Select a payment method above.",
-        dana: "DANA:<br>083833230870<br>Acc: NANDO",
+        dana: "DANA:<br>089637254003<br>Acc: NONE",
         gopay: "GoPay:<br>-<br>Acc: -",
         copy: "Copy Number",
         copied: "Copied!",
         note: "After transferring, please send the proof of payment to",
-        wa: "Contact WhatsApp",
+        tele: "Contact Telegram",
         download: "Download QRIS"
       }
     };
 
     let currentLang = "id";
-    const qrisUrl = "https://files.catbox.moe/sbo3uf.jpg";
+    const qrisUrl = "https://files.catbox.moe/6s8qcn.jpg";
 
     function showInfo(method) {
       const infoBox = document.getElementById("payment-info");
@@ -283,7 +283,7 @@
       if (method === "dana") {
         content = `
           <p><strong>${languageData[currentLang].dana}</strong></p>
-          <button class="copy-btn" onclick="copyText('083833230870')">${languageData[currentLang].copy}</button>
+          <button class="copy-btn" onclick="copyText('089637254003')">${languageData[currentLang].copy}</button>
         `;
       } else if (method === "gopay") {
         content = `
@@ -318,7 +318,7 @@
       currentLang = document.getElementById("language").value;
       document.getElementById("select-text").innerText = languageData[currentLang].select;
       document.getElementById("note-text").innerHTML =
-        `${languageData[currentLang].note} <span class="highlight">RYUZEN🦅</span> melalui WhatsApp.`;
+        `${languageData[currentLang].note} <span class="highlight">DANJI👾</span> melalui WhatsApp.`;
       document.getElementById("wa-button").innerText = languageData[currentLang].wa;
       document.getElementById("payment-info").innerHTML = `<p id="select-text">${languageData[currentLang].select}</p>`;
     }

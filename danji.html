@@ -2,255 +2,335 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>XATANICAL BELLA PAYMENT</title>
-  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PAYMENT RYUZEN🦅</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body {
-      font-family: 'Share Tech Mono', monospace;
-      background: black;
-      color: #00ffcc;
-      height: 100%;
-      overflow: hidden;
+    :root {
+      --bg-dark: #0e0e2c;
+      --bg-light: #f5f5f5;
+      --card-dark: #111b3b;
+      --card-light: #ffffff;
+      --text-dark: #ffffff;
+      --text-light: #111;
+      --accent: #00ffc3;
+      --whatsapp: #25D366;
     }
 
-    canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: -1;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      transition: all 0.3s ease;
     }
 
-    .wrapper {
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
+      display: flex;
+      justify-content: center;
+      align-items: center;
       height: 100vh;
-      overflow-y: auto;
-      padding: 80px 20px 40px;
     }
 
-    .glitch {
-      font-size: 2.8em;
-      text-align: center;
-      color: #00ffcc;
-      animation: glitch 1s infinite;
-    }
-
-    @keyframes glitch {
-      0% { text-shadow: 2px 0 red, -2px 0 blue; }
-      20% { text-shadow: -2px 0 red, 2px 0 blue; }
-      40% { text-shadow: 2px 2px red, -2px -2px blue; }
-      60% { text-shadow: -2px -2px red, 2px 2px blue; }
-      80% { text-shadow: 0 0 red, 0 0 blue; }
-      100% { text-shadow: 2px 0 red, -2px 0 blue; }
+    body.light {
+      background-color: var(--bg-light);
+      color: var(--text-light);
     }
 
     .container {
-      backdrop-filter: blur(5px);
-      background: rgba(0, 255, 153, 0.05);
-      border: 1px solid #00ffcc33;
-      border-radius: 14px;
-      padding: 30px 20px;
-      width: 100%;
-      max-width: 400px;
-      margin: 0 auto;
-      box-shadow: 0 0 25px #00ffcc33;
+      padding: 20px;
+      animation: fadeInUp 1s ease forwards;
+      opacity: 0;
     }
 
-    .thumbnail {
-      width: 130px;
-      height: 130px;
-      border-radius: 16px;
-      box-shadow: 0 0 20px #00ffcc;
-      margin: 20px auto;
-      display: block;
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
-    .btn {
-      display: block;
-      background: transparent;
-      border: 2px solid #00ffcc;
-      color: #00ffcc;
-      padding: 12px;
-      width: 100%;
-      margin: 8px 0;
-      border-radius: 8px;
+    .card {
+      background-color: var(--card-dark);
+      border-radius: 20px;
+      padding: 30px 25px;
+      box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
+      text-align: center;
+      max-width: 360px;
+      border: 1px solid var(--accent);
+    }
+
+    body.light .card {
+      background-color: var(--card-light);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .top-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .avatar {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      border: 3px solid var(--accent);
+      object-fit: cover;
+    }
+
+    select {
+      background-color: transparent;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      border-radius: 10px;
+      padding: 5px 10px;
       font-weight: bold;
-      transition: all 0.3s ease;
-      backdrop-filter: blur(5px);
-      text-align: center;
-    }
-
-    .btn:hover {
-      background: #00ffcc;
-      color: black;
-      transform: scale(1.03);
-    }
-
-    .qris-img,
-    .nomor-box {
-      display: none;
-      margin-top: 15px;
-      width: 100%;
-      border-radius: 10px;
-      box-shadow: 0 0 12px #00ffccaa;
-      text-align: center;
-      padding: 10px;
-    }
-
-    .product-card {
-      margin-top: 25px;
-      border: 1px solid #00ffcc44;
-      padding: 14px;
-      border-radius: 10px;
-      background: rgba(0, 255, 153, 0.05);
       cursor: pointer;
+    }
+
+    .theme-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+    }
+
+    .theme-toggle input {
+      width: 50px;
+      height: 26px;
+      -webkit-appearance: none;
+      background: #444;
+      outline: none;
+      border-radius: 20px;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .theme-toggle input:checked {
+      background: var(--accent);
+    }
+
+    .theme-toggle input::before {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      top: 3px;
+      left: 3px;
+      background: white;
       transition: 0.3s;
     }
 
-    .product-card:hover {
-      transform: scale(1.02);
-      background: rgba(0, 255, 153, 0.1);
+    .theme-toggle input:checked::before {
+      transform: translateX(24px);
     }
 
-    .product-title {
-      font-size: 1.2em;
-      color: #00ffff;
+    h1 {
+      font-size: 22px;
+      margin: 15px 0 25px;
     }
 
-    .price {
-      font-size: 0.9em;
-      margin-top: 5px;
-      color: #66ffff;
+    .buttons {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 10px;
     }
 
-    .product-detail {
-      font-size: 0.85em;
-      color: #aaffff;
-      display: none;
-      margin-top: 8px;
+    .pay-btn {
+      background: transparent;
+      border: 2px solid var(--accent);
+      color: var(--accent);
+      padding: 10px 15px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    .pay-btn:hover {
+      background: var(--accent);
+      color: #000;
+    }
+
+    .info-box {
+      font-size: 14px;
+      margin-bottom: 20px;
+      min-height: 60px;
+    }
+
+    .qris-img {
+      width: 160px;
+      margin-top: 10px;
+      border-radius: 10px;
+      border: 2px solid var(--accent);
     }
 
     .note {
-      text-align: center;
-      font-size: 0.9em;
+      font-size: 13px;
+      margin-bottom: 20px;
+    }
+
+    .highlight {
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    .whatsapp-button {
+      background: var(--whatsapp);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 20px;
+      text-decoration: none;
+      font-weight: bold;
+      display: inline-block;
+      transition: background 0.3s ease;
+    }
+
+    .whatsapp-button:hover {
+      background: #1ebe5d;
+    }
+
+    .copy-btn, .download-btn {
       margin-top: 10px;
-      color: #999;
+      background-color: var(--accent);
+      color: #000;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .copy-btn:hover, .download-btn:hover {
+      background-color: #00d3aa;
     }
   </style>
 </head>
-<body oncontextmenu="return false" onkeydown="return disableKeys(event)">
-<canvas id="matrixCanvas"></canvas>
-
-<div class="wrapper">
-  <div class="glitch">DANJI PAYMENT</div>
-  <img src="https://files.catbox.moe/0ev5tj.jpg" class="thumbnail" />
+<body>
+  <div class="theme-toggle">
+    <input type="checkbox" id="themeSwitch" onchange="toggleTheme()" />
+  </div>
 
   <div class="container">
-    <!-- Tombol Pembayaran -->
-    <button class="btn" onclick="toggleQRIS()">Tampilkan QRIS</button>
-    <img id="qrisImage" class="qris-img" src="https://ibb.co.com/j9qCGhgm" alt="QRIS " />
-
-    <button class="btn" onclick="toggleDana()">Dana</button>
-    <div id="danaBox" class="nomor-box">Nomor Dana: <strong>0896 3725 4003</strong></div>
-
-    <button class="btn" onclick="toggleGopay()">Gopay</button>
-    <div id="gopayBox" class="nomor-box">Nomor Gopay: <strong>0896 3725 4003</strong></div>
-
-    <div class="note">Atas Nama: <strong>Z E P</strong></div>
-
-    <!-- Produk -->
-    <div class="product-card" onclick="toggleDetail(this)">
-      <div class="product-title">Danji Store</div>
-      <div class="price">Mulai Rp50.000</div>
-      <div class="product-detail">
-        Toko layanan script & tools Order via admin
+    <div class="card">
+      <div class="top-section">
+        <img src="https://files.catbox.moe/5jxdq5.jpg" class="avatar" alt="RYUZEN Avatar" />
+        <select id="language" onchange="setLanguage()">
+          <option value="id">🇮🇩 Indonesia</option>
+          <option value="en">🇬🇧 English</option>
+        </select>
       </div>
-    </div>
 
-    <div class="product-card" onclick="toggleDetail(this)">
-      <div class="product-title">Telegram Bot Hefaistos Hades</div>
-      <div class="price">Rp100.000</div>
-      <div class="product-detail">
-        Bot Telegram Bug WhatsApp.
-        Name Script : Hefaistos Hades.
+      <h1 id="title">Payment <span class="highlight">RYUZEN🦅</span></h1>
+
+      <div class="buttons">
+        <button class="pay-btn" onclick="showInfo('dana')">DANA</button>
+        <button class="pay-btn" onclick="showInfo('gopay')">GoPay</button>
+        <button class="pay-btn" onclick="showInfo('qris')">QRIS</button>
       </div>
-    </div>
 
-    <div class="product-card" onclick="toggleDetail(this)">
-      <div class="product-title">Telegram Bot Dheatless Empire</div>
-      <div class="price">Rp30.000</div>
-      <div class="product-detail">
-        Bot Telegram Bug WhatsApp.
-        Name Script : Dheatless Empire 
+      <div id="payment-info" class="info-box">
+        <p id="select-text">Pilih metode pembayaran di atas.</p>
       </div>
+
+      <p class="note" id="note-text">
+        Setelah transfer, mohon kirimkan bukti pembayaran ke <span class="highlight">RYUZEN🦅</span> melalui WhatsApp.
+      </p>
+
+      <a href="https://wa.me/6283846040552" class="whatsapp-button" id="wa-button">Hubungi WhatsApp</a>
     </div>
+  </div>
 
-    <div class="product-card" onclick="toggleDetail(this)">
-      <div class="product-title">Murban WhatsApp</div>
-      <div class="price">Rp25.000</div>
-      <div class="product-detail">
-        Benefit : Dapatkan Mt Ban gacor, Up mt setiap Hari, Di Ajarin Ban Kalau Belum Bisa 
-      </div>
-    </div>
+  <script>
+    const languageData = {
+      id: {
+        select: "Pilih metode pembayaran di atas.",
+        dana: "DANA:<br>083833230870<br>A/n NANDO",
+        gopay: "GoPay:<br>-<br>A/n -",
+        copy: "Salin Nomor",
+        copied: "Disalin!",
+        note: "Setelah transfer, mohon kirimkan bukti pembayaran ke",
+        wa: "Hubungi WhatsApp",
+        download: "Unduh QRIS"
+      },
+      en: {
+        select: "Select a payment method above.",
+        dana: "DANA:<br>083833230870<br>Acc: NANDO",
+        gopay: "GoPay:<br>-<br>Acc: -",
+        copy: "Copy Number",
+        copied: "Copied!",
+        note: "After transferring, please send the proof of payment to",
+        wa: "Contact WhatsApp",
+        download: "Download QRIS"
+      }
+    };
 
-<script>
-  function toggleDetail(card) {
-    const detail = card.querySelector('.product-detail');
-    detail.style.display = detail.style.display === 'block' ? 'none' : 'block';
-  }
+    let currentLang = "id";
+    const qrisUrl = "https://files.catbox.moe/sbo3uf.jpg";
 
-  function toggleQRIS() {
-    const img = document.getElementById('qrisImage');
-    img.style.display = img.style.display === 'block' ? 'none' : 'block';
-  }
+    function showInfo(method) {
+      const infoBox = document.getElementById("payment-info");
+      let content = "";
 
-  function toggleDana() {
-    const danaBox = document.getElementById('danaBox');
-    danaBox.style.display = danaBox.style.display === 'block' ? 'none' : 'block';
-  }
+      if (method === "dana") {
+        content = `
+          <p><strong>${languageData[currentLang].dana}</strong></p>
+          <button class="copy-btn" onclick="copyText('083833230870')">${languageData[currentLang].copy}</button>
+        `;
+      } else if (method === "gopay") {
+        content = `
+          <p><strong>${languageData[currentLang].gopay}</strong></p>
+          <button class="copy-btn" onclick="copyText('-')">${languageData[currentLang].copy}</button>
+        `;
+      } else if (method === "qris") {
+        content = `
+          <p><strong>QRIS:</strong><br>
+          <img src="${qrisUrl}" alt="QRIS" class="qris-img" /><br>
+          <a href="${qrisUrl}" download="qris-epinhost.jpg">
+            <button class="download-btn">${languageData[currentLang].download}</button>
+          </a>
+          </p>
+        `;
+      }
 
-  function toggleGopay() {
-    const gopayBox = document.getElementById('gopayBox');
-    gopayBox.style.display = gopayBox.style.display === 'block' ? 'none' : 'block';
-  }
-
-  function disableKeys(e) {
-    if (
-      e.key === 'F12' || 
-      (e.ctrlKey && e.shiftKey && e.key === 'I') || 
-      (e.ctrlKey && e.shiftKey && e.key === 'J') || 
-      (e.ctrlKey && e.key === 'U')
-    ) {
-      return false;
+      infoBox.innerHTML = content;
     }
-  }
 
-  // Matrix Effect
-  const canvas = document.getElementById('matrixCanvas');
-  const ctx = canvas.getContext('2d');
-  canvas.height = window.innerHeight;
-  canvas.width = window.innerWidth;
-  const letters = "DANJIPAYMENT";
-  const fontSize = 16;
-  const columns = canvas.width / fontSize;
-  const drops = Array(Math.floor(columns)).fill(1);
-
-  function drawMatrix() {
-    ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "#00ffcc";
-    ctx.font = fontSize + "px monospace";
-
-    for (let i = 0; i < drops.length; i++) {
-      const text = letters[Math.floor(Math.random() * letters.length)];
-      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-      if (drops[i] * fontSize > canvas.height && Math.random() > 0.975)
-        drops[i] = 0;
-      drops[i]++;
+    function copyText(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        const buttons = document.querySelectorAll('.copy-btn');
+        buttons.forEach(btn => btn.innerText = languageData[currentLang].copied);
+        setTimeout(() => {
+          buttons.forEach(btn => btn.innerText = languageData[currentLang].copy);
+        }, 1500);
+      });
     }
-  }
-  setInterval(drawMatrix, 50);
-</script>
 
+    function setLanguage() {
+      currentLang = document.getElementById("language").value;
+      document.getElementById("select-text").innerText = languageData[currentLang].select;
+      document.getElementById("note-text").innerHTML =
+        `${languageData[currentLang].note} <span class="highlight">RYUZEN🦅</span> melalui WhatsApp.`;
+      document.getElementById("wa-button").innerText = languageData[currentLang].wa;
+      document.getElementById("payment-info").innerHTML = `<p id="select-text">${languageData[currentLang].select}</p>`;
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle("light");
+    }
+
+    // Start animation
+    window.onload = () => {
+      document.querySelector(".container").style.opacity = "1";
+    };
+  </script>
 </body>
-  </html>
+</html>

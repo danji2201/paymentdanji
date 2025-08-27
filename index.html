@@ -233,7 +233,7 @@
 
       <div class="buttons">
         <button class="pay-btn" onclick="showInfo('dana')">DANA</button>
-        <button class="pay-btn" onclick="showInfo('gopay')">GoPay</button>
+        <button class="pay-btn" onclick="showInfo('gopay')">gopay</button>
         <button class="pay-btn" onclick="showInfo('qris')">QRIS</button>
       </div>
 
@@ -263,7 +263,7 @@
       },
       en: {
         select: "Pilih metode pembayaran di atas.",
-        dana: "DANA:<br>089637254003<br>A/n NONE",
+        gopay: "DANA:<br>089637254003<br>A/n NONE",
         gopay: "GoPay:<br>-<br>A/n -",
         copy: "Salin Nomor",
         copied: "Disalin!",
@@ -288,7 +288,7 @@
       } else if (method === "gopay") {
         content = `
           <p><strong>${languageData[currentLang].gopay}</strong></p>
-          <button class="copy-btn" onclick="copyText('-')">${languageData[currentLang].copy}</button>
+          <button class="copy-btn" onclick="copyText('089637254003')">${languageData[currentLang].copy}</button>
         `;
       } else if (method === "qris") {
         content = `

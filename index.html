@@ -1,336 +1,594 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PAYMENT DANJI</title>
-  <style>
-    :root {
-      --bg-dark: #0e0e2c;
-      --bg-light: #f5f5f5;
-      --card-dark: #111b3b;
-      --card-light: #ffffff;
-      --text-dark: #ffffff;
-      --text-light: #111;
-      --accent: #00ffc3;
-      --whatsapp: #25D366;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Payment RixxeDev</title>
+    <!-- Tambahkan favicon di sini -->
+    <link rel="icon" type="image/png" href="https://img1.pixhost.to/images/6849/616627061_imgtmp.jpg">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      transition: all 0.3s ease;
-    }
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            color: #fff;
+            overflow: hidden;
+            position: relative;
+        }
 
-    body {
-      font-family: 'Poppins', sans-serif;
-      background-color: var(--bg-dark);
-      color: var(--text-dark);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 1;
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
 
-    body.light {
-      background-color: var(--bg-light);
-      color: var(--text-light);
-    }
+        .loader.hidden {
+            opacity: 0;
+            transform: scale(1.1);
+            pointer-events: none;
+        }
 
-    .container {
-      padding: 20px;
-      animation: fadeInUp 1s ease forwards;
-      opacity: 0;
-    }
+        .spinner {
+            width: 140px;
+            height: 140px;
+            position: relative;
+            animation: bounceCartoon 1.2s infinite ease-in-out;
+        }
 
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+        .spinner::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="none" stroke="%2300ffff" stroke-width="10" stroke-dasharray="150 100" transform="rotate(0 50 50)"><animateTransform attributeName="transform" type="rotate" from="0 50 50" to="360 50 50" dur="2s" repeatCount="indefinite"/></circle><circle cx="50" cy="50" r="30" fill="rgba(0, 255, 255, 0.3)"/></svg>') no-repeat center;
+            background-size: contain;
+            animation: pulseCartoon 1.2s infinite ease-in-out;
+        }
 
-    .card {
-      background-color: var(--card-dark);
-      border-radius: 20px;
-      padding: 30px 25px;
-      box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
-      text-align: center;
-      max-width: 360px;
-      border: 1px solid var(--accent);
-    }
+        .spinner::after {
+            content: 'Loading...';
+            position: absolute;
+            top: 110%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #00ffff;
+            text-shadow: 0 0 15px rgba(0, 255, 255, 0.9);
+            animation: textWobble 1.2s infinite ease-in-out;
+        }
 
-    body.light .card {
-      background-color: var(--card-light);
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-    }
+        @keyframes bounceCartoon {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-25px) scale(1.05); }
+        }
 
-    .top-section {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+        @keyframes pulseCartoon {
+            0%, 100% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1); opacity: 1; }
+        }
 
-    .avatar {
-      width: 90px;
-      height: 90px;
-      border-radius: 50%;
-      border: 3px solid var(--accent);
-      object-fit: cover;
-    }
+        @keyframes textWobble {
+            0%, 100% { transform: translateX(-50%) skewX(0deg); }
+            25% { transform: translateX(-50%) skewX(5deg); }
+            75% { transform: translateX(-50%) skewX(-5deg); }
+        }
 
-    select {
-      background-color: transparent;
-      color: var(--accent);
-      border: 1px solid var(--accent);
-      border-radius: 10px;
-      padding: 5px 10px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+        .page {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            padding: 50px;
+            max-width: 750px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 30px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(0, 255, 255, 0.2);
+            opacity: 0;
+            transition: all 0.9s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            z-index: 1;
+            backdrop-filter: blur(8px);
+        }
 
-    .theme-toggle {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-    }
+        .page.active {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
 
-    .theme-toggle input {
-      width: 50px;
-      height: 26px;
-      -webkit-appearance: none;
-      background: #444;
-      outline: none;
-      border-radius: 20px;
-      position: relative;
-      cursor: pointer;
-    }
+        .page.hidden {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.85);
+            pointer-events: none;
+        }
 
-    .theme-toggle input:checked {
-      background: var(--accent);
-    }
+        #about h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 25px;
+            opacity: 0;
+            animation: popInSmooth 1.2s 0.5s forwards;
+        }
 
-    .theme-toggle input::before {
-      content: '';
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      top: 3px;
-      left: 3px;
-      background: white;
-      transition: 0.3s;
-    }
+        #about .typing-animation {
+            display: inline-block;
+            font-size: 1.6rem;
+            font-weight: 400;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 4px solid #00ffff;
+            width: 0;
+            opacity: 0;
+            animation: cartoonTypingSmooth 5s steps(24, end) 1s forwards, blink 0.6s step-end infinite;
+        }
 
-    .theme-toggle input:checked::before {
-      transform: translateX(24px);
-    }
+        @keyframes cartoonTypingSmooth {
+            0% { width: 0; opacity: 0; transform: translateX(-150px) scale(0.7); }
+            30% { opacity: 1; transform: translateX(30px) scale(1.15); }
+            60% { transform: translateX(-15px) scale(0.95); }
+            80% { transform: translateX(10px) scale(1.05); }
+            100% { width: 24ch; opacity: 1; transform: translateX(0) scale(1); }
+        }
 
-    h1 {
-      font-size: 22px;
-      margin: 15px 0 25px;
-    }
+        @keyframes blink {
+            from { border-color: transparent; }
+            to { border-color: #00ffff; }
+        }
 
-    .buttons {
-      display: flex;
-      justify-content: space-around;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
+        @keyframes popInSmooth {
+            0% { opacity: 0; transform: scale(0.6) translateY(-50px); }
+            70% { opacity: 1; transform: scale(1.1) translateY(10px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
 
-    .pay-btn {
-      background: transparent;
-      border: 2px solid var(--accent);
-      color: var(--accent);
-      padding: 10px 15px;
-      border-radius: 12px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: all 0.3s ease;
-    }
+        #about .subtitle {
+            font-size: 1.2rem;
+            color: #b0c4de;
+            margin: 20px 0 30px;
+            opacity: 0;
+            animation: bounceInSmooth 1.2s 1.5s forwards;
+        }
 
-    .pay-btn:hover {
-      background: var(--accent);
-      color: #000;
-    }
+        @keyframes bounceInSmooth {
+            0% { opacity: 0; transform: translateY(60px); }
+            60% { opacity: 1; transform: translateY(-15px); }
+            80% { transform: translateY(5px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
 
-    .info-box {
-      font-size: 14px;
-      margin-bottom: 20px;
-      min-height: 60px;
-    }
+        .btn {
+            display: inline-block;
+            padding: 15px 35px;
+            background: linear-gradient(135deg, #00ffff, #00cccc);
+            color: #0f172a;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            box-shadow: 0 8px 25px rgba(0, 255, 255, 0.5);
+        }
 
-    .qris-img {
-      width: 160px;
-      margin-top: 10px;
-      border-radius: 10px;
-      border: 2px solid var(--accent);
-    }
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
 
-    .note {
-      font-size: 13px;
-      margin-bottom: 20px;
-    }
+        .btn:hover::after {
+            width: 350px;
+            height: 350px;
+        }
 
-    .highlight {
-      color: var(--accent);
-      font-weight: bold;
-    }
+        .btn:hover {
+            transform: scale(1.08);
+            box-shadow: 0 12px 30px rgba(0, 255, 255, 0.8);
+        }
 
-    .whatsapp-button {
-      background: var(--whatsapp);
-      color: white;
-      padding: 10px 20px;
-      border-radius: 20px;
-      text-decoration: none;
-      font-weight: bold;
-      display: inline-block;
-      transition: background 0.3s ease;
-    }
+        #payment {
+            overflow-y: auto;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+        }
 
-    .whatsapp-button:hover {
-      background: #1ebe5d;
-    }
+        #payment h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #00ffff, #00cccc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            animation: popInSmooth 1.2s forwards;
+        }
 
-    .copy-btn, .download-btn {
-      margin-top: 10px;
-      background-color: var(--accent);
-      color: #000;
-      border: none;
-      padding: 8px 14px;
-      border-radius: 12px;
-      cursor: pointer;
-      font-weight: bold;
-    }
+        #payment .subtitle {
+            font-size: 1rem;
+            color: #b0c4de;
+            margin-bottom: 15px;
+            font-weight: 300;
+            opacity: 0;
+            animation: bounceInSmooth 1.2s 0.5s forwards;
+        }
 
-    .copy-btn:hover, .download-btn:hover {
-      background-color: #00d3aa;
-    }
-  </style>
+        .qr-frame {
+            position: relative;
+            display: inline-block;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .qr-frame::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, rgba(0, 255, 255, 0.4), transparent);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            transform: rotate(30deg);
+        }
+
+        .qr-frame:hover::before {
+            opacity: 1;
+        }
+
+        .qr-frame:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 15px 35px rgba(0, 255, 255, 0.6);
+        }
+
+        .qr-frame img {
+            width: 200px;
+            height: auto;
+            border-radius: 15px;
+            transition: transform 0.6s ease;
+        }
+
+        .qr-frame:hover img {
+            transform: scale(1.1);
+        }
+
+        .payment-info {
+            margin: 20px 0;
+            text-align: left;
+            max-width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        details {
+            margin-bottom: 15px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 10px;
+            padding: 10px;
+            transition: all 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            transform-origin: top;
+            position: relative;
+            overflow: hidden;
+        }
+
+        details[open] {
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.4);
+            animation: expandSmooth 0.8s ease forwards;
+        }
+
+        details:not([open]) {
+            animation: shrinkSmooth 0.8s ease forwards;
+        }
+
+        @keyframes expandSmooth {
+            0% { transform: scaleY(0.85); opacity: 0.8; }
+            50% { transform: scaleY(1.1); opacity: 1; }
+            100% { transform: scaleY(1); opacity: 1; }
+        }
+
+        @keyframes shrinkSmooth {
+            0% { transform: scaleY(1); opacity: 1; }
+            50% { transform: scaleY(1.1); opacity: 0.9; }
+            100% { transform: scaleY(0.85); opacity: 0.8; }
+        }
+
+        summary {
+            font-weight: 500;
+            cursor: pointer;
+            padding: 12px;
+            outline: none;
+            color: #00ffff;
+            transition: all 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        summary:hover {
+            color: #00cccc;
+            transform: translateX(8px);
+        }
+
+        summary::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            width: 0;
+            height: 4px;
+            background: #00ffff;
+            transition: width 0.5s ease;
+            transform: translateY(-50%);
+        }
+
+        summary:hover::before {
+            width: 20px;
+        }
+
+        summary::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 255, 255, 0.3);
+            transform: skewX(15deg);
+            transition: left 0.5s ease;
+        }
+
+        summary:hover::after {
+            left: 100%;
+        }
+
+        .payment-info p {
+            padding: 8px 15px;
+            font-size: 1rem;
+            color: #e2e8f0;
+            opacity: 0;
+            transform: translateY(25px);
+            animation: popUpSmooth 0.6s ease forwards;
+        }
+
+        @keyframes popUpSmooth {
+            0% { opacity: 0; transform: translateY(25px) scale(0.9); }
+            70% { opacity: 1; transform: translateY(-8px) scale(1.05); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .social {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .overlay img {
+            max-width: 90%;
+            width: 480px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 255, 255, 0.6);
+        }
+
+        .overlay.active img {
+            animation: cartoonZoomIn 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+        }
+
+        .overlay:not(.active) img {
+            animation: cartoonZoomOut 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+        }
+
+        @keyframes cartoonZoomIn {
+            0% { transform: scale(0.5) translateY(100px); opacity: 0; filter: blur(5px); }
+            40% { transform: scale(1.15) translateY(-20px); opacity: 1; filter: blur(0); }
+            70% { transform: scale(0.95) translateY(10px); }
+            100% { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
+        @keyframes cartoonZoomOut {
+            0% { transform: scale(1) translateY(0); opacity: 1; }
+            30% { transform: scale(1.1) translateY(-30px); opacity: 0.8; }
+            60% { transform: scale(0.7) translateY(50px); }
+            100% { transform: scale(0.5) translateY(100px); opacity: 0; filter: blur(5px); }
+        }
+
+        @media (max-width: 480px) {
+            #payment {
+                padding: 20px;
+                max-width: 100%;
+                width: 95%;
+                top: 0;
+                transform: translate(-50%, 0);
+                height: auto;
+                margin-top: 10px;
+            }
+
+            #payment.active {
+                transform: translate(-50%, 0) scale(1);
+            }
+
+            #payment.hidden {
+                transform: translate(-50%, 0) scale(0.85);
+            }
+
+            #payment h1 {
+                font-size: 1.8rem;
+            }
+
+            #payment .subtitle {
+                font-size: 0.9rem;
+            }
+
+            .qr-frame img {
+                width: 160px;
+            }
+
+            .btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+
+            .payment-info {
+                padding: 10px;
+                margin: 15px 0;
+            }
+
+            .overlay img {
+                width: 300px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="theme-toggle">
-    <input type="checkbox" id="themeSwitch" onchange="toggleTheme()" />
-  </div>
-
-  <div class="container">
-    <div class="card">
-      <div class="top-section">
-        <img src="https://files.catbox.moe/vfot45.jpg" class="avatar" alt="DANJI Avatar" />
-        <select id="language" onchange="setLanguage()">
-          <option value="id">🇮🇩 Indonesia</option>
-          <option value="en">🇬🇧 English</option>
-        </select>
-      </div>
-
-      <h1 id="title">Payment <span class="highlight">DANJI👾</span></h1>
-
-      <div class="buttons">
-        <button class="pay-btn" onclick="showInfo('dana')">DANA</button>
-        <button class="pay-btn" onclick="showInfo('gopay')">gopay</button>
-        <button class="pay-btn" onclick="showInfo('qris')">QRIS</button>
-      </div>
-
-      <div id="payment-info" class="info-box">
-        <p id="select-text">Pilih metode pembayaran di atas.</p>
-      </div>
-
-      <p class="note" id="note-text">
-        Setelah transfer, mohon kirimkan bukti pembayaran ke <span class="highlight">DANJI👾</span> melalui Telegram.
-      </p>
-
-      <a href="https://t.me/danji27" class="telegram-button" id="wa-button">Hubungi Telegram</a>
+    <div class="loader" id="loader">
+        <div class="spinner"></div>
     </div>
-  </div>
 
-  <script>
-    const languageData = {
-      id: {
-        select: "Pilih metode pembayaran di atas.",
-        dana: "DANA:<br>089637254003<br>A/n NONE",
-        gopay: "GoPay:<br>-<br>A/n -",
-        copy: "Salin Nomor",
-        copied: "Disalin!",
-        note: "Setelah transfer, mohon kirimkan bukti pembayaran ke",
-        tele: "Hubungi Telegram",
-        download: "Unduh QRIS"
-      },
-      en: {
-        select: "Pilih metode pembayaran di atas.",
-        gopay: "DANA:<br>089637254003<br>A/n NONE",
-        gopay: "GoPay:<br>-<br>A/n -",
-        copy: "Salin Nomor",
-        copied: "Disalin!",
-        note: "Setelah transfer, mohon kirimkan bukti pembayaran ke",
-        tele: "Hubungi Telegram",
-        download: "Unduh QRIS"
-      }
-    };
+    <div class="page" id="about">
+        <h1>Hey, I'm RixxeMarket</h1>
+        <div class="typing-animation">I'm a Website Payment</div>
+        <p class="subtitle">Selamat datang di website payment RixxeMarket</p>
+        <a href="#" class="btn" onclick="showPayment()">Go to Payment</a>
+    </div>
 
-    let currentLang = "id";
-    const qrisUrl = "https://files.catbox.moe/6s8qcn.jpg";
+    <div class="page hidden" id="payment">
+        <h1>Payment Methods</h1>
+        <p class="subtitle">Silahkan pilih salah satu metode pembayaran di bawah ini</p>
 
-    function showInfo(method) {
-      const infoBox = document.getElementById("payment-info");
-      let content = "";
+        <div class="qr-frame" onclick="zoomQR()">
+            <img id="qrisImage" src="https://img1.pixhost.to/images/6852/616711147_imgtmp.jpg" alt="QR Code for Payment">
+        </div>
 
-      if (method === "dana") {
-        content = `
-          <p><strong>${languageData[currentLang].dana}</strong></p>
-          <button class="copy-btn" onclick="copyText('089637254003')">${languageData[currentLang].copy}</button>
-        `;
-      } else if (method === "gopay") {
-        content = `
-          <p><strong>${languageData[currentLang].gopay}</strong></p>
-          <button class="copy-btn" onclick="copyText('089637254003')">${languageData[currentLang].copy}</button>
-        `;
-      } else if (method === "qris") {
-        content = `
-          <p><strong>QRIS:</strong><br>
-          <img src="${qrisUrl}" alt="QRIS" class="qris-img" /><br>
-          <a href="${qrisUrl}" download="qris-epinhost.jpg">
-            <button class="download-btn">${languageData[currentLang].download}</button>
-          </a>
-          </p>
-        `;
-      }
+        <p class="subtitle">Scan kode QR di atas dengan aplikasi pembayaran Anda</p>
 
-      infoBox.innerHTML = content;
-    }
+        <div class="payment-info">
+            <details>
+                <summary>E-WALLET</summary> 
+                <p><strong>DANA</strong>: 081282171403</p>
+                <p><strong>GOPAY</strong>: 087836632663</p>
+                <p><strong>OVO</strong>: TF KE QR AJA</p>
+            </details>
 
-    function copyText(text) {
-      navigator.clipboard.writeText(text).then(() => {
-        const buttons = document.querySelectorAll('.copy-btn');
-        buttons.forEach(btn => btn.innerText = languageData[currentLang].copied);
-        setTimeout(() => {
-          buttons.forEach(btn => btn.innerText = languageData[currentLang].copy);
-        }, 1500);
-      });
-    }
+            <details>
+                <summary>TRANSFER BANK</summary>
+                <p><strong>SEABANK</strong>: LUPA NO BANK</p>
+            </details>
+        </div>
 
-    function setLanguage() {
-      currentLang = document.getElementById("language").value;
-      document.getElementById("select-text").innerText = languageData[currentLang].select;
-      document.getElementById("note-text").innerHTML =
-        `${languageData[currentLang].note} <span class="highlight">DANJI👾</span> melalui WhatsApp.`;
-      document.getElementById("wa-button").innerText = languageData[currentLang].wa;
-      document.getElementById("payment-info").innerHTML = `<p id="select-text">${languageData[currentLang].select}</p>`;
-    }
+        <div class="social">
+            <a href="https://wa.me/6283129460981" target="_blank" class="btn">WhatsApp</a>
+            <a href="https://rixxe-offc.vercel.app" target="_blank" class="btn">Web Utama</a>
+            <a href="https://t.me/RixxeDev1" target="_blank" class="btn">Telegram</a>
+            <a href="https://whatsapp.com/channel/0029VbB8RxcJUM2eZR2gLP3w" target="_blank" class="btn">Testimoni</a>
+        </div>
 
-    function toggleTheme() {
-      document.body.classList.toggle("light");
-    }
+        <a href="#" class="btn" onclick="showAbout()">Back</a>
+    </div>
 
-    // Start animation
-    window.onload = () => {
-      document.querySelector(".container").style.opacity = "1";
-    };
-  </script>
+    <div class="overlay" id="qrOverlay" onclick="closeZoom()">
+        <img id="zoomedQR" src="" alt="QR Code for Payment">
+    </div>
+
+    <script>
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader');
+            const about = document.getElementById('about');
+            setTimeout(() => {
+                loader.classList.add('hidden');
+                setTimeout(() => {
+                    about.classList.add('active');
+                }, 200);
+            }, 2500);
+        });
+
+        function showPayment() {
+            const about = document.getElementById('about');
+            const payment = document.getElementById('payment');
+            about.classList.remove('active');
+            about.classList.add('hidden');
+            setTimeout(() => {
+                payment.classList.remove('hidden');
+                payment.classList.add('active');
+            }, 900);
+        }
+
+        function showAbout() {
+            const payment = document.getElementById('payment');
+            const about = document.getElementById('about');
+            payment.classList.remove('active');
+            payment.classList.add('hidden');
+            setTimeout(() => {
+                about.classList.remove('hidden');
+                about.classList.add('active');
+            }, 900);
+        }
+
+        function zoomQR() {
+            const qrImage = document.getElementById('qrisImage').src;
+            const overlay = document.getElementById('qrOverlay');
+            document.getElementById('zoomedQR').src = qrImage;
+            overlay.classList.add('active');
+        }
+
+        function closeZoom() {
+            const overlay = document.getElementById('qrOverlay');
+            overlay.classList.remove('active');
+        }
+    </script>
 </body>
 </html>

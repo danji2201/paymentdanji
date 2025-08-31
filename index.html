@@ -1,243 +1,315 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Website Hosting Premium</title>
-  <link rel="stylesheet" href="website.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>Simple Payment</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: url('https://files.catbox.moe/73gkfe.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      text-align: center;
+      overflow-x: hidden;
+      padding: 50px 20px;
+      position: relative;
+    }
+
+    canvas#particles, canvas#snow {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    .shine {
+      position: absolute;
+      top: -100%;
+      left: -100%;
+      width: 300%;
+      height: 300%;
+      background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0));
+      transform: rotate(45deg);
+      animation: shine 4s infinite linear;
+      z-index: 0;
+    }
+
+    @keyframes shine {
+      0% { transform: translate(-100%, -100%) rotate(45deg); }
+      100% { transform: translate(100%, 100%) rotate(45deg); }
+    }
+
+    #main-content {
+      display: none;
+      color: white;
+      font-family: 'Poppins', sans-serif;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+    }
+
+    .welcome-message {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      animation: fadeIn 2s forwards;
+      z-index: 9999;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    h1 {
+      font-size: 3em;
+      margin-bottom: 0.2em;
+      animation: fadeInDown 1s ease-in-out;
+    }
+
+    p {
+      font-size: 1.2em;
+      color: #cbd5e1;
+      animation: fadeInUp 1s ease-in-out;
+    }
+
+    .qr img {
+      width: 220px;
+      border-radius: 12px;
+      margin: 30px auto;
+      transition: transform 0.3s ease;
+    }
+
+    .qr:hover img { transform: scale(1.08); }
+
+    .collapsible-container {
+      max-width: 500px;
+      margin: 30px auto;
+      background-color: rgba(30, 41, 59, 0.8);
+      border-radius: 15px;
+      padding: 20px;
+    }
+
+    .collapsible {
+      background: linear-gradient(135deg, #5b247a, #1bcedf);
+      color: #fff;
+      cursor: pointer;
+      padding: 14px 20px;
+      width: 100%;
+      font-size: 1.1em;
+      border-radius: 12px;
+      margin-top: 10px;
+      text-align: left;
+      position: relative;
+      border: none;
+      transition: background 0.3s ease;
+    }
+
+    .collapsible::after {
+      content: '▼';
+      position: absolute;
+      right: 20px;
+      transition: transform 0.3s ease;
+    }
+
+    .collapsible.active::after {
+      transform: rotate(-180deg);
+    }
+
+    .content {
+      max-height: 0;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(8px);
+      border-radius: 0 0 12px 12px;
+      transition: max-height 0.4s ease, padding 0.3s ease;
+      padding: 0 20px;
+      margin-top: 5px;
+      color: #e0e0e0;
+      font-size: 0.95em;
+      border-left: 2px solid rgba(255, 255, 255, 0.15);
+      border-right: 2px solid rgba(255, 255, 255, 0.15);
+      border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .content.open {
+      padding: 15px 20px;
+      max-height: 300px;
+    }
+
+    .btn-group {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 40px;
+      gap: 12px;
+    }
+
+    .btn-link, .btn-links {
+      padding: 14px 24px;
+      background: linear-gradient(45deg, #9073fa, #574596, #1fd1f9, #271e4a);
+      background-size: 200% 200%;
+      animation: gradientBtn 4s ease infinite;
+      color: #fff;
+      font-weight: 600;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+    
+    .btn-pay {
+  padding: 14px 24px;
+  background: linear-gradient(45deg, #9073fa, #574596, #1fd1f9, #271e4a);
+  background-size: 200% 200%;
+  animation: gradientBtn 4s ease infinite;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: 0.3s;
+  margin-top: 20px;
+}
+
+    .btn-link:hover, .btn-links:hover { transform: scale(1.08); }
+
+    @keyframes fadeInDown {
+      0% { opacity: 0; transform: translateY(-30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInUp {
+      0% { opacity: 0; transform: translateY(30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes gradientBtn {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Fullscreen QR Overlay */
+    .fullscreen-qr {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(6px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9998;
+      transition: opacity 0.3s ease;
+    }
+
+    .fullscreen-qr img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+    }
+
+    .fullscreen-qr.hidden {
+      display: none;
+    }
+  </style>
 </head>
 <body>
 
-<!-- Garis titik tiga di pojok kanan atas -->
-<div id="fabMenu">
-  <span id="fabDots">&#8942;</span>
+<div class="shine"></div>
+
+<div id="welcome-message" class="welcome-message">
+  <h1>HAI MAS/MBAK SALAM KENAL SAYA XSMONS STORE</h1>
+  <p>ELAMAT DATANG DI WEBSITE PAYMENT BY XSMONS.</p>
+  <button id="go-to-payment" class="btn-pay">Payment</button>
 </div>
 
-<!-- Popup menu owner -->
-<div id="popupFabMenu" style="display:none;">
-  <button onclick="window.open('https://t.me/YourBotUserName','_blank')">Chat Owner (Telegram Bot)</button>
-  <hr>
-  <h3>List Anime Favorit</h3>
-  <ul>
-    <li>One Piece</li>
-    <li>Kimetsu no Yaiba</li>
-    <li>Jujutsu Kaisen</li>
-    <li>Attack on Titan</li>
-    <li>Solo Leveling</li>
-  </ul>
-  <h3>List Lagu Favorit</h3>
-  <ul>
-    <li>Unravel - TK from Ling Tosite Sigure</li>
-    <li>Gurenge - LiSA</li>
-    <li>Blue Bird - Ikimon Gakari</li>
-    <li>My War - Shinsei Kamattechan</li>
-    <li>Kaikai Kitan - Eve</li>
-  </ul>
-  <button id="closeFabMenu" style="margin-top:12px;">Tutup</button>
-</div>
+<div id="main-content">
+  <h1>Payment List</h1>
+  <p>Silakan Pilih Metode Pembayaran Di Bawah</p>
 
-<h2>Halo, Selamat datang di website Hosting premium & murah</h2>
-<hr>
-<h2>List menu Jualan Hosting By: @Aurelxa</h2>
-<ul>
-  <li>Paket Hostin - A Rp 10.000/Bln</li>
-  <li>Paket Hosting - B Rp 13.000/Bln</li>
-  <li>Paket Hosting - C Rp 15.000/Bln</li>
-  <li>Paket Hosting - D Rp 25.000/Bln</li>
-  <li>Paket Script Bug Whatsapp - Rp 25.000 - 60.000</li>
-  <li>Paket Anti Detection - Rp 50.000</li>
-  <li>Paket Hosting Murah - Rp 50.000(Close)</li>
-  <li>Lihat List Boleh Cek Di Button Bawah!</li>
-</ul>
-
-<button onclick="window.location.href='https://wa.me/62895403880703'">Contact Me</button>
-<button id="showPaymentBtn">List Pembayaran</button>
-
-<!-- Popup pembayaran -->
-<div id="popupPayment" style="display:none; position:fixed; top:35%; left:50%; transform:translate(-50%, -50%); background:#fff; padding:24px; border-radius:12px; box-shadow:0 4px 16px rgba(0,0,0,0.2); text-align:left; min-width:260px;">
-  <h2>List Pembayaran</h2>
-  <ul>
-    <li>Bank BCA: 1234567890 a.n. Ivan Rachmad</li>
-    <li>Bank Mandiri: 0987654321 a.n. Ivan Rachmad</li>
-    <li>OVO: 081234567890</li>
-    <li>DANA: 081234567890</li>
-    <li>Gopay: 081234567890</li>
-  </ul>
-  <button id="closePaymentBtn" style="margin-top:12px;">Tutup</button>
-</div>
-
-<script>
-document.getElementById('showPaymentBtn').onclick = function() {
-  document.getElementById('popupPayment').style.display = 'block';
-};
-document.getElementById('closePaymentBtn').onclick = function() {
-  document.getElementById('popupPayment').style.display = 'none';
-};
-</script>
-
-<button id="showMenuBtn">Lihat Semua Menu</button>
-<!-- Popup list menu -->
-<div id="popupMenu" style="display:none; position:fixed; top:38%; left:50%; transform:translate(-50%, -50%); background:#fff; padding:24px; border-radius:12px; box-shadow:0 4px 16px rgba(0,0,0,0.2); text-align:left; min-width:260px; max-height:70vh; overflow-y:auto; z-index:1002;">
-  <h2>List Menu Lengkap Hosting Premium</h2>
-  <ul>
-    <li>Paket Hosting : Panel Pretodactyl 5GB-10GB</li>
-    <li>Paket Apk Bug Whatsapp : Rp 30.000/Bln</li>
-    <li>Paket Private Rp 50.000</li>
-  </ul>
-  <button onclick="window.location.href='https://t.me/Aurelxa'">Contact Person</button>
-  <button id="closeMenuBtn" style="margin-top:12px;">Tutup</button>
-</div>
-<script>
-document.getElementById('showMenuBtn').onclick = function() {
-  document.getElementById('popupMenu').style.display = 'block';
-};
-document.getElementById('closeMenuBtn').onclick = function() {
-  document.getElementById('popupMenu').style.display = 'none';
-};
-</script>
-
-<p>Copyright By: @Aurelxa</p>
-<hr>
-
-<!-- Button untuk membuka popup tentang diri -->
-<button id="showAboutBtn">Tentang Saya</button>
-<!-- Popup tentang diri -->
-<div id="popupAbout" style="display:none; position:fixed; top:40%; left:50%; transform:translate(-50%, -50%); background:#fff; padding:24px; border-radius:12px; box-shadow:0 4px 16px rgba(0,0,0,0.2); text-align:left; min-width:260px;">
-  <h2>Tentang Saya</h2>
-  <p>Halo! Saya Aurelxa Mikadono, penyedia layanan hosting premium & murah.<br>
-  Siap membantu kebutuhan website Anda dengan support terbaik.<br>
-  Hubungi saya untuk konsultasi atau kerjasama!</p>
-  <button id="closeAboutBtn" style="margin-top:12px;">Tutup</button>
-</div>
-<script>
-document.getElementById('showAboutBtn').onclick = function() {
-  document.getElementById('popupAbout').style.display = 'block';
-};
-document.getElementById('closeAboutBtn').onclick = function() {
-  document.getElementById('popupAbout').style.display = 'none';
-};
-</script>
-
-<!-- Tombol untuk membuka popup jam -->
-<button id="showClockBtn">Lihat Jam!</button>
-<!-- Popup jam digital -->
-<div id="popupClock" style="display:none; position:fixed; top:30%; left:50%; transform:translate(-50%, -50%); background:#fff; padding:24px; border-radius:12px; box-shadow:0 4px 16px rgba(0,0,0,0.2); text-align:center;">
-  <h2>Jam Digital</h2>
-  <div id="clock" style="font-size:2em; margin-bottom:8px;">00:00:00</div>
-  <div id="day" style="font-size:1.2em; color:#007bff;">Senin</div>
-  <button id="closeClockBtn">Tutup</button>
-</div>
-<script>
-function updateClock() {
-  const now = new Date();
-  const jam = String(now.getHours()).padStart(2, '0');
-  const menit = String(now.getMinutes()).padStart(2, '0');
-  const detik = String(now.getSeconds()).padStart(2, '0');
-  const days = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
-  document.getElementById('clock').textContent = `${jam}:${menit}:${detik}`;
-  document.getElementById('day').textContent = days[now.getDay()];
-}
-setInterval(updateClock, 1000);
-
-document.getElementById('showClockBtn').onclick = function() {
-  document.getElementById('popupClock').style.display = 'block';
-};
-document.getElementById('closeClockBtn').onclick = function() {
-  document.getElementById('popupClock').style.display = 'none';
-};
-</script>
-
-<script>
-document.getElementById('fabDots').onclick = function() {
-  document.getElementById('popupFabMenu').style.display = 'block';
-};
-document.getElementById('closeFabMenu').onclick = function() {
-  document.getElementById('popupFabMenu').style.display = 'none';
-};
-</script>
-
-<button id="showSourceBtn">Buy Api Bug</button>
-<div id="popupSource" style="display:none; position:fixed; top:38%; left:50%; transform:translate(-50%, -50%); background:#fff; padding:24px; border-radius:12px; box-shadow:0 4px 16px rgba(0,0,0,0.2); text-align:left; min-width:260px; max-height:70vh; overflow-y:auto; z-index:1002;">
-  <h2>Buy Api Bug & List Harga</h2>
-  <ul>
-    <li>Api Bug - Easy - Rp 20.000/Bln</li>
-    <li>Api Bug - Medium - Rp 35.000/Bln</li>
-    <li>Api Bug - Hard - Rp 50.000/Bln</li>
-  </ul>
-  <h5>List Api Bug Harian</h5>
-  <ul>
-    <li>Api Bug 5Day - Rp 10.000/Day</li>
-    <li>Api Bug 15Day - Rp 15.000/Day</li>
-    <li>Api Bug 20Day - Rp 25.000/Day</li>
-  </ul>
-  <button id="closeSourceBtn" style="margin-top:12px;">Close</button>
-  <button onclick="window.open('https://t.me/Aurelxa','_blank')">Contact Person</button>
-</div>
-<script>
-document.getElementById('showSourceBtn').onclick = function() {
-  document.getElementById('popupSource').style.display = 'block';
-};
-document.getElementById('closeSourceBtn').onclick = function() {
-  document.getElementById('popupSource').style.display = 'none';
-};
-</script>
-
-<button id="showFreeBtn">Api Bug Gratisan</button>
-<div id="popupFree" style="display:none; position:fixed; top:38%; left:50%; transform:translate(-50%, -50%); background:#fff; padding:24px; border-radius:12px; box-shadow:0 4px 16px rgba(0,0,0,0.2); text-align:left; min-width:260px; max-height:70vh; overflow-y:auto; z-index:1002;">
-  <h4>Api Bug Gratisan</h4>
-  <ul>
-    <li>Https://ApiCrash.200/</li>
-    <li>CommingSoon</li>
-    <li>CommingSoon</li>
-  </ul>
-  <h5>Note: Api Bug Gratisan Hanya Bertahan Beberapa Hari Saja Masa Berlakunya!</h5>
-  <button id="closeFreeBtn" style="margin-top:12px;">Close</button>
-  <button onclick="window.open('https://t.me/Aurelxa','_blank')">Contact Person</button>
-</div>
-<script>
-document.getElementById('showFreeBtn').onclick = function() {
-  document.getElementById('popupFree').style.display = 'block';
-};
-document.getElementById('closeFreeBtn').onclick = function() {
-  document.getElementById('popupFree').style.display = 'none';
-};
-</script>
-
-<button onclick="openPopup()">Buy Website Bug</button>
-<div class="popup" id="popupwebsite">
-  <h2>Pilih Paket Website</h2>
-  <div class="role-option" onclick="goPayment('Reseller', '120.000')">
-    <strong>Reseller</strong> - Rp 120.000
+  <div class="qr">
+    <img src="https://files.catbox.moe/73gkfe.jpg" />
   </div>
-  <div class="role-option" onclick="goPayment('Member', '40.000')">
-    <strong>Member</strong> - Rp 40.000
+
+  <p class="subtitle">Scan Qr Code Di Bawah Untuk Melakukan Pembayaran Via Qris</p>
+
+  <div class="collapsible-container">
+    <button class="collapsible" id="qris-btn">QRIS</button>
+    <div class="content">
+      <img src="https://files.catbox.moe/9n9r7b.jpg" id="qris-image" style="width: 200px; border-radius: 12px; cursor: pointer;" />
+      <p>Gunakan aplikasi pembayaran untuk scan kode QR ini.</p>
+    </div>
+    
+    <button class="collapsible">DANA</button>
+    <div class="content">
+      <p><strong>DANA:</strong> 0882010188577</p>
+      <p><strong>ATAS NAMA:</strong> FITRIA *****</p>
+    </div>
+
+    <button class="collapsible">GOPAY</button>
+    <div class="content">
+      <p><strong>GOPAY:</strong> 0882010188577</p>
+      <p><strong>ATAS NAMA:</strong> LUPA HEHE,TF AJA/p>
+    </div>
   </div>
-  <button class="close" onclick="closePopup()">Tutup</button>
+
+  <div class="btn-group">
+    <a href="https://wa.me/6282229468819<" class="btn-link" target="_blank">WhatsApp</a>
+    <a href="https://t.me/FinzXsmons" class="btn-link" target="_blank">Telegram</a>
+    <a href="index.html" class="btn-link">Kembali</a>
+  </div>
 </div>
 
-<div class="payment" id="payment">
-  <h2>Method Pembayaran</h2>
-  <p id="selectedRole"></p>
-  <img src="https://files.catbox.moe/stkolm.jpg" alt="Qris">
-  <img src="https://files.catbox.moe/stkolm.jpg" alt="Dana">
-  <p>Silakan bayar sesuai nominal lalu upload bukti pembayarannya.</p>
-  <input type="file" id="proof">
-  <button onclick="confirmOrder()">Konfirmasi</button>
-  <button class="close" onclick="closePayment()">Tutup</button>
+<!-- Fullscreen QR Overlay -->
+<div class="fullscreen-qr hidden" id="fullscreen-qr">
+  <img src="https://files.catbox.moe/9n9r7b.jpg" alt="QRIS Fullscreen" />
 </div>
 
-<div class="confirm" id="confirm">
-  <h2>Pembayaran Diproses</h2>
-  <p>Owner akan memverifikasi pembayaran Anda.<br>
-  Setelah berhasil, akun anda akan dibuat otomatis.</p>
-  <p><strong>Username:</strong> user123</p>
-  <p><strong>Password:</strong> pass123</p>
-  <p><a href="https://example.com/login" target="_blank">Link Website</a></p>
-  <button class="close" onclick="closeConfirm()">Selesai</button>
-</div>
+<script>
+  document.getElementById('go-to-payment').addEventListener('click', function () {
+    document.getElementById('welcome-message').style.display = 'none';
+    document.getElementById('main-content').style.display = 'block';
+  });
 
-<script src="main.js"></script>
+  const collapsibles = document.querySelectorAll('.collapsible');
+  collapsibles.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      btn.classList.toggle('active');
+      const content = btn.nextElementSibling;
+      content.classList.toggle('open');
+    });
+  });
+
+  const qrisImage = document.getElementById('qris-image');
+  const qrOverlay = document.getElementById('fullscreen-qr');
+
+  qrisImage.addEventListener('click', () => {
+    qrOverlay.classList.remove('hidden');
+  });
+
+  qrOverlay.addEventListener('click', () => {
+    qrOverlay.classList.add('hidden');
+  });
+</script>
 
 </body>
-      </html>
+</html>

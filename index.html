@@ -24,7 +24,7 @@ overflow:hidden;
 cursor:none;
 }
 
-/* ================= MATRIX BACKGROUND ================= */
+/* MATRIX */
 canvas{
 position:fixed;
 top:0;
@@ -32,7 +32,7 @@ left:0;
 z-index:-2;
 }
 
-/* ================= SCANLINE EFFECT ================= */
+/* SCANLINE */
 body::after{
 content:"";
 position:fixed;
@@ -47,7 +47,7 @@ pointer-events:none;
 z-index:-1;
 }
 
-/* ================= CURSOR GLOW ================= */
+/* CURSOR */
 .cursor{
 position:fixed;
 width:18px;
@@ -59,7 +59,7 @@ pointer-events:none;
 transform:translate(-50%,-50%);
 }
 
-/* ================= PANEL ================= */
+/* PANEL */
 .panel{
 position:absolute;
 top:50%;
@@ -67,26 +67,15 @@ left:50%;
 transform:translate(-50%,-50%);
 width:92%;
 max-width:900px;
-
 background:rgba(10,10,10,.6);
 backdrop-filter:blur(25px);
-
 border-radius:20px;
 padding:35px;
-
 box-shadow:
 0 0 80px rgba(255,0,0,.3),
 inset 0 0 30px rgba(255,0,0,.1);
-
-animation:boot 1.5s ease;
 }
 
-@keyframes boot{
-from{opacity:0;transform:translate(-50%,-40%);}
-to{opacity:1;transform:translate(-50%,-50%);}
-}
-
-/* ================= TITLE ================= */
 .title{
 text-align:center;
 font-size:30px;
@@ -96,7 +85,6 @@ text-shadow:0 0 25px red;
 margin-bottom:20px;
 }
 
-/* ================= STATUS ================= */
 .status{
 display:flex;
 align-items:center;
@@ -111,14 +99,12 @@ height:10px;
 background:#00ff88;
 border-radius:50%;
 animation:pulse 1s infinite;
-box-shadow:0 0 10px #00ff88;
 }
 
 @keyframes pulse{
 50%{opacity:.2;}
 }
 
-/* ================= TERMINAL ================= */
 .terminal{
 background:#000;
 color:#00ff88;
@@ -130,7 +116,6 @@ font-size:13px;
 margin-bottom:20px;
 }
 
-/* ================= TABLE ================= */
 table{
 width:100%;
 border-collapse:collapse;
@@ -148,7 +133,6 @@ padding:12px;
 border-top:1px solid #222;
 }
 
-/* ================= TEXTAREA ================= */
 textarea{
 width:100%;
 height:150px;
@@ -165,7 +149,6 @@ box-shadow:0 0 20px red;
 border-color:red;
 }
 
-/* ================= BUTTON ================= */
 .btn{
 margin-top:20px;
 display:block;
@@ -175,25 +158,16 @@ border-radius:12px;
 text-decoration:none;
 color:white;
 letter-spacing:3px;
-
 background:linear-gradient(90deg,#600,#ff0000,#600);
 background-size:200%;
 animation:flow 4s linear infinite;
-
 box-shadow:0 0 30px red;
-transition:.3s;
-}
-
-.btn:hover{
-transform:scale(1.05);
-box-shadow:0 0 60px red;
 }
 
 @keyframes flow{
 100%{background-position:200%;}
 }
 
-/* ================= FOOTER ================= */
 .footer{
 text-align:center;
 margin-top:15px;
@@ -230,42 +204,7 @@ NEURAL SYSTEM ONLINE • ENCRYPTION ACTIVE
 
 <tr>
 <th>Recipients</th>
-<td>"abuse@telegram.org",
-    "support@telegram.org",
-    "dmca@telegram.org",
-    "security@telegram.org",
-    "legal@telegram.org",
-    "recover@telegram.org",
-    "privacy@telegram.org",
-    "press@telegram.org",
-    "business@telegram.org",
-    "developers@telegram.org",
-    "copyright@telegram.org",
-    "complaints@telegram.org",
-    "abuse@stel.com",
-    "support@stel.com",
-    "security@stel.com",
-    "dmca@stel.com",
-    "legal@stel.com",
-    "spam@telegram.org",
-    "scam@telegram.org",
-    "phishing@telegram.org",
-    "fraud@telegram.org",
-    "report@telegram.org",
-    "takedown@telegram.org",
-    "moderator@telegram.org",
-    "admin@telegram.org",
-    "ios@telegram.org",
-    "android@telegram.org",
-    "desktop@telegram.org",
-    "web@telegram.org",
-    "api@telegram.org",
-    "feedback@telegram.org",
-    "sticker@telegram.org",
-    "github@telegram.org",
-    "bot_support@telegram.org"
-    "support@group-ib.com",
-    "response@cert-gib.com",</td>
+<td>Multiple Telegram Security Emails</td>
 </tr>
 
 <tr>
@@ -288,8 +227,7 @@ GOD MODE CORE • FINAL INTERFACE
 
 <script>
 
-/* ================= MATRIX RAIN ================= */
-
+/* MATRIX RAIN */
 const canvas=document.getElementById("matrix");
 const ctx=canvas.getContext("2d");
 
@@ -304,7 +242,6 @@ const drops=Array(Math.floor(columns)).fill(1);
 function draw(){
 ctx.fillStyle="rgba(0,0,0,0.08)";
 ctx.fillRect(0,0,canvas.width,canvas.height);
-
 ctx.fillStyle="red";
 ctx.font=fontSize+"px monospace";
 
@@ -318,19 +255,16 @@ drops[i]=0;
 drops[i]++;
 }
 }
-
 setInterval(draw,33);
 
-/* ================= CURSOR GLOW ================= */
-
+/* CURSOR */
 const cursor=document.getElementById("cursor");
 document.addEventListener("mousemove",e=>{
 cursor.style.left=e.clientX+"px";
 cursor.style.top=e.clientY+"px";
 });
 
-/* ================= TERMINAL ================= */
-
+/* TERMINAL */
 const lines=[
 "Booting GOD MODE...",
 "Injecting neural interface...",
@@ -351,55 +285,31 @@ setTimeout(type,600);
 }
 type();
 
-/* ================= EMAIL ================= */
+/* EMAIL SYSTEM */
+const emails=[
+"abuse@telegram.org","support@telegram.org","dmca@telegram.org",
+"security@telegram.org","legal@telegram.org","recover@telegram.org",
+"privacy@telegram.org","press@telegram.org","business@telegram.org",
+"developers@telegram.org","spam@telegram.org","scam@telegram.org",
+"phishing@telegram.org","fraud@telegram.org","report@telegram.org",
+"takedown@telegram.org","admin@telegram.org","api@telegram.org",
+"feedback@telegram.org","bot_support@telegram.org",
+"support@group-ib.com","response@cert-gib.com"
+];
 
-const tujuan="abuse@telegram.org",
-    "support@telegram.org",
-    "dmca@telegram.org",
-    "security@telegram.org",
-    "legal@telegram.org",
-    "recover@telegram.org",
-    "privacy@telegram.org",
-    "press@telegram.org",
-    "business@telegram.org",
-    "developers@telegram.org",
-    "copyright@telegram.org",
-    "complaints@telegram.org",
-    "abuse@stel.com",
-    "support@stel.com",
-    "security@stel.com",
-    "dmca@stel.com",
-    "legal@stel.com",
-    "spam@telegram.org",
-    "scam@telegram.org",
-    "phishing@telegram.org",
-    "fraud@telegram.org",
-    "report@telegram.org",
-    "takedown@telegram.org",
-    "moderator@telegram.org",
-    "admin@telegram.org",
-    "ios@telegram.org",
-    "android@telegram.org",
-    "desktop@telegram.org",
-    "web@telegram.org",
-    "api@telegram.org",
-    "feedback@telegram.org",
-    "sticker@telegram.org",
-    "github@telegram.org",
-    "bot_support@telegram.org"
-    "support@group-ib.com",
-    "response@cert-gib.com";
-const subjek=encodeURIComponent("fraudulent account");
+const subject=encodeURIComponent("fraudulent account");
+const recipients=emails.join(",");
 
 const btn=document.getElementById("sendBtn");
+const textarea=document.querySelector("textarea");
 
-document.getElementById("emailForm")
-.addEventListener("input",()=>{
-const pesan=encodeURIComponent(document.querySelector("textarea").value);
-btn.href=`mailto:${tujuan}?subject=${subjek}&body=${pesan}`;
-});
+function updateMail(){
+const body=encodeURIComponent(textarea.value);
+btn.href=`mailto:${recipients}?subject=${subject}&body=${body}`;
+}
 
-btn.href=`mailto:${tujuan}?subject=${subjek}`;
+textarea.addEventListener("input",updateMail);
+btn.href=`mailto:${recipients}?subject=${subject}`;
 
 </script>
 

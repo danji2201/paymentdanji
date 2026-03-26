@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>GOD MODE SYSTEM</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+
+/* ================= BASE ================= */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Orbitron',sans-serif;
+}
+
+body{
+background:#000;
+color:#fff;
+overflow:hidden;
+cursor:none;
+}
+
+/* ================= MATRIX BACKGROUND ================= */
+canvas{
+position:fixed;
+top:0;
+left:0;
+z-index:-2;
+}
+
+/* ================= SCANLINE EFFECT ================= */
+body::after{
+content:"";
+position:fixed;
+width:100%;
+height:100%;
+background:repeating-linear-gradient(
+transparent,
+transparent 2px,
+rgba(255,0,0,.05) 3px
+);
+pointer-events:none;
+z-index:-1;
+}
+
+/* ================= CURSOR GLOW ================= */
+.cursor{
+position:fixed;
+width:18px;
+height:18px;
+border-radius:50%;
+background:red;
+box-shadow:0 0 20px red,0 0 40px red;
+pointer-events:none;
+transform:translate(-50%,-50%);
+}
+
+/* ================= PANEL ================= */
+.panel{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+width:92%;
+max-width:900px;
+
+background:rgba(10,10,10,.6);
+backdrop-filter:blur(25px);
+
+border-radius:20px;
+padding:35px;
+
+box-shadow:
+0 0 80px rgba(255,0,0,.3),
+inset 0 0 30px rgba(255,0,0,.1);
+
+animation:boot 1.5s ease;
+}
+
+@keyframes boot{
+from{opacity:0;transform:translate(-50%,-40%);}
+to{opacity:1;transform:translate(-50%,-50%);}
+}
+
+/* ================= TITLE ================= */
+.title{
+text-align:center;
+font-size:30px;
+letter-spacing:5px;
+color:#ff2a2a;
+text-shadow:0 0 25px red;
+margin-bottom:20px;
+}
+
+/* ================= STATUS ================= */
+.status{
+display:flex;
+align-items:center;
+gap:10px;
+color:#aaa;
+margin-bottom:15px;
+}
+
+.dot{
+width:10px;
+height:10px;
+background:#00ff88;
+border-radius:50%;
+animation:pulse 1s infinite;
+box-shadow:0 0 10px #00ff88;
+}
+
+@keyframes pulse{
+50%{opacity:.2;}
+}
+
+/* ================= TERMINAL ================= */
+.terminal{
+background:#000;
+color:#00ff88;
+padding:15px;
+border-radius:10px;
+height:100px;
+overflow:hidden;
+font-size:13px;
+margin-bottom:20px;
+}
+
+/* ================= TABLE ================= */
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th{
+background:#140000;
+color:#ff4444;
+padding:12px;
+text-align:left;
+}
+
+td{
+padding:12px;
+border-top:1px solid #222;
+}
+
+/* ================= TEXTAREA ================= */
+textarea{
+width:100%;
+height:150px;
+background:#020202;
+border:1px solid #440000;
+color:#ff7777;
+padding:12px;
+border-radius:8px;
+outline:none;
+}
+
+textarea:focus{
+box-shadow:0 0 20px red;
+border-color:red;
+}
+
+/* ================= BUTTON ================= */
+.btn{
+margin-top:20px;
+display:block;
+text-align:center;
+padding:16px;
+border-radius:12px;
+text-decoration:none;
+color:white;
+letter-spacing:3px;
+
+background:linear-gradient(90deg,#600,#ff0000,#600);
+background-size:200%;
+animation:flow 4s linear infinite;
+
+box-shadow:0 0 30px red;
+transition:.3s;
+}
+
+.btn:hover{
+transform:scale(1.05);
+box-shadow:0 0 60px red;
+}
+
+@keyframes flow{
+100%{background-position:200%;}
+}
+
+/* ================= FOOTER ================= */
+.footer{
+text-align:center;
+margin-top:15px;
+color:#555;
+font-size:12px;
+}
+
+</style>
+</head>
+
+<body>
+
+<canvas id="matrix"></canvas>
+<div class="cursor" id="cursor"></div>
+
+<div class="panel">
+
+<div class="title">⚡ GOD MODE INTERFACE ⚡</div>
+
+<div class="status">
+<div class="dot"></div>
+NEURAL SYSTEM ONLINE • ENCRYPTION ACTIVE
+</div>
+
+<div class="terminal" id="terminal"></div>
+
+<form id="emailForm">
+
+<table>
+<tr>
+<th>Subject</th>
+<td>Telegram Abuse Report</td>
+</tr>
+
+<tr>
+<th>Recipients</th>
+<td>support@telegram.org, abuse@telegram.org, security@telegram.org</td>
+</tr>
+
+<tr>
+<th>Report Details</th>
+<td>
+<textarea placeholder="Insert report details..."></textarea>
+</td>
+</tr>
+</table>
+
+<a id="sendBtn" class="btn">EXECUTE TRANSMISSION</a>
+
+</form>
+
+<div class="footer">
+GOD MODE CORE • FINAL INTERFACE
+</div>
+
+</div>
+
+<script>
+
+/* ================= MATRIX RAIN ================= */
+
+const canvas=document.getElementById("matrix");
+const ctx=canvas.getContext("2d");
+
+canvas.width=innerWidth;
+canvas.height=innerHeight;
+
+const letters="01";
+const fontSize=14;
+const columns=canvas.width/fontSize;
+const drops=Array(Math.floor(columns)).fill(1);
+
+function draw(){
+ctx.fillStyle="rgba(0,0,0,0.08)";
+ctx.fillRect(0,0,canvas.width,canvas.height);
+
+ctx.fillStyle="red";
+ctx.font=fontSize+"px monospace";
+
+for(let i=0;i<drops.length;i++){
+const text=letters[Math.floor(Math.random()*letters.length)];
+ctx.fillText(text,i*fontSize,drops[i]*fontSize);
+
+if(drops[i]*fontSize>canvas.height && Math.random()>0.975)
+drops[i]=0;
+
+drops[i]++;
+}
+}
+
+setInterval(draw,33);
+
+/* ================= CURSOR GLOW ================= */
+
+const cursor=document.getElementById("cursor");
+document.addEventListener("mousemove",e=>{
+cursor.style.left=e.clientX+"px";
+cursor.style.top=e.clientY+"px";
+});
+
+/* ================= TERMINAL ================= */
+
+const lines=[
+"Booting GOD MODE...",
+"Injecting neural interface...",
+"Connecting secure channel...",
+"Encryption enabled...",
+"System ready."
+];
+
+let i=0;
+const term=document.getElementById("terminal");
+
+function type(){
+if(i<lines.length){
+term.innerHTML+=lines[i]+"<br>";
+i++;
+setTimeout(type,600);
+}
+}
+type();
+
+/* ================= EMAIL ================= */
+
+const tujuan="support@telegram.org,abuse@telegram.org,security@telegram.org";
+const subjek=encodeURIComponent("Telegram Abuse Report");
+
+const btn=document.getElementById("sendBtn");
+
+document.getElementById("emailForm")
+.addEventListener("input",()=>{
+const pesan=encodeURIComponent(document.querySelector("textarea").value);
+btn.href=`mailto:${tujuan}?subject=${subjek}&body=${pesan}`;
+});
+
+btn.href=`mailto:${tujuan}?subject=${subjek}`;
+
+</script>
+
+</body>
+</html>
